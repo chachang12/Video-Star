@@ -10,7 +10,6 @@ import { fetchVideos } from './Utils/api';
 import { favoriteVideo, addToCart, removeFromCart, purchaseVideos } from './Lib/UserFunctions';
 
 const initialUser: User = {
-  purchasedVideos: [],
   favoritedVideos: [],
   cartVideos: [],
 };
@@ -22,6 +21,7 @@ function App() {
   const [isCartSummaryOpen, setIsCartSummaryOpen] = useState(false);
 
   useEffect(() => {
+    // Gets videos from the API and sets the state
     const getVideos = async () => {
       const fetchedVideos = await fetchVideos();
       setVideos(fetchedVideos);
