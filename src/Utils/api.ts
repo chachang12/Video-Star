@@ -1,20 +1,11 @@
-// api.ts
-
-import { mockVideos } from './../Mocks/mockVideos';
-import { Video } from './../Models/Video';
-
-const isMock = import.meta.env.VITE_USE_MOCK === 'true';
+import { Video } from '../Models/Video';
 
 export const fetchVideos = async (): Promise<Video[]> => {
-  if (isMock) {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(mockVideos), 500);
-    });
-  } else {
-    const response = await fetch('/api/');
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  }
+  const response = await fetch('/api/');
+  const videos: Video[] = await response.json();
+  return videos.map(video => ({
+    ...video,
+    isFavorited: false,
+    isInCart: false,
+  }));
 };

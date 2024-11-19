@@ -2,16 +2,16 @@ import React from 'react';
 import { Video } from '../Models/Video';
 import { IoHeartOutline, IoHeart, IoCloseOutline } from "react-icons/io5";
 import { formatDuration, bytesToMb } from '../Lib/FormatingFunctions';
+import { useVideoContext } from '../Context/VideoContext';
 
 interface TheaterModeProps {
   video: Video;
   onClose: () => void;
-  onFavorite: (video: Video) => void;
-  onAddToCart: (video: Video) => void;
-  isFavorited: boolean;
 }
 
-const TheaterMode: React.FC<TheaterModeProps> = ({ video, onClose, onFavorite, onAddToCart, isFavorited }) => {
+const TheaterMode: React.FC<TheaterModeProps> = ({ video, onClose }) => {
+  const { handleFavorite, handleAddToCart } = useVideoContext();
+
   const handleFullscreenChange = (event: Event) => {
     const videoElement = event.target as HTMLVideoElement;
     if (document.fullscreenElement) {
@@ -41,7 +41,7 @@ const TheaterMode: React.FC<TheaterModeProps> = ({ video, onClose, onFavorite, o
           />
           {!video.isFree && !video.isPurchased && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <button onClick={() => onAddToCart(video)} className="text-white py-2 px-4 rounded-full outline outline-2 outline-white">Add to Cart</button>
+              <button onClick={() => handleAddToCart(video)} className="text-white py-2 px-4 rounded-full outline outline-2 outline-white">Add to Cart</button>
             </div>
           )}
         </div>
@@ -59,13 +59,15 @@ const TheaterMode: React.FC<TheaterModeProps> = ({ video, onClose, onFavorite, o
                 <p className="">Price: ${video.price}</p>
             </div>
           </div>
-          <button onClick={() => onFavorite(video)} className="flex items-center rounded-full mt-4 lg:mt-0">
-            {isFavorited ? (
-              <IoHeart size={40} className="text-2xl mr-2" />
-            ) : (
-              <IoHeartOutline size={40} className="text-2xl mr-2" />
-            )}
-          </button>
+          {video.isFree && (
+            <button onClick={() => handleFavorite(video)} className="flex items-center rounded-full mt-4 lg:mt-0">
+              {video.isFavorited ? (
+                <IoHeart size={40} className="text-2xl mr-2" />
+              ) : (
+                <IoHeartOutline size={40} className="text-2xl mr-2" />
+              )}
+            </button>
+          )}
         </div>
       </div>
     </div>

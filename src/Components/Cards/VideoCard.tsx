@@ -10,7 +10,7 @@ interface VideoCardProps {
 
 const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoSelect }) => {
   return (
-    <div className="rounded-lg overflow-hidden group relative cursor-pointer" onClick={() => onVideoSelect(video)}>
+    <div className="rounded-lg overflow-hidden group relative cursor-pointer w-[350px]" onClick={() => onVideoSelect(video)}>
       <div className="relative rounded-lg overflow-hidden border border-white">
         <video
           crossOrigin="anonymous"
@@ -27,11 +27,13 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoSelect }) => {
         )}
         <div className="absolute bottom-2 left-4">
           <p className="text-white text-md font-[400]">{formatDuration(video.duration)}</p>
+          {/* <p className="text-white text-md font-[400]">{video.duration}</p> */}
         </div>
       </div>
       <div className="mt-2">
         <h2 className="text-lg text-white font-semibold">
           {truncateText(video.name, 75)}
+          {/* {video.name}  */}
         </h2>
       </div>
     </div>

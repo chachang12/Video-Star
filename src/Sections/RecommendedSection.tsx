@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Video } from './../Models/Video';
 import VideoCard from '../Components/Cards/VideoCard';
+import { useVideoContext } from '../Context/VideoContext';
 
-interface RecommendedSectionProps {
-  onVideoSelect: (video: Video) => void;
-  videos: Video[];
-}
-
-const RecommendedSection: React.FC<RecommendedSectionProps> = ({ onVideoSelect, videos }) => {
+const RecommendedSection: React.FC<{ onVideoSelect: (video: Video) => void }> = ({ onVideoSelect }) => {
+  const { randomVideos } = useVideoContext();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(false);
-  }, [videos]);
-
-  const getRandomVideos = (videos: Video[], count: number): Video[] => {
-    const shuffled = videos.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  };
-
-  const randomVideos = getRandomVideos(videos, 3);
+    if (randomVideos.length > 0) {
+      setLoading(false);
+    }
+  }, [randomVideos]);
 
   return (
     <>
@@ -31,7 +23,7 @@ const RecommendedSection: React.FC<RecommendedSectionProps> = ({ onVideoSelect, 
       ) : randomVideos.length === 0 ? (
         <div className="text-center text-white">No videos available</div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="flex flex-row gap-6 flex-wrap">
           {randomVideos.map(video => (
             <VideoCard key={video.id} video={video} onVideoSelect={onVideoSelect} />
           ))}

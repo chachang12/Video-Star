@@ -22,8 +22,6 @@ export const filterByName = (videos: Video[], searchTerm: string): Video[] => {
   return videos.filter(video => video.name.toLowerCase().includes(searchTerm.toLowerCase()));
 };
 
-// Function to filter videos by favorited status
-export const filterByFavoritedStatus = (videos: Video[], favoritedVideos: Video[]): Video[] => {
-  const favoritedIds = new Set(favoritedVideos.map(video => video.id));
-  return videos.filter(video => favoritedIds.has(video.id));
+export const filterByFavoritedStatus = (videos: Video[]): Video[] => {
+  return videos.filter(video => video.isFavorited);
 };

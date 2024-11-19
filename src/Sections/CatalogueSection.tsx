@@ -4,14 +4,10 @@ import { Video } from './../Models/Video';
 import VideoCard from '../Components/Cards/VideoCard';
 import { filterByDuration, filterByPaidStatus, filterByName, filterByFavoritedStatus } from '../Lib/FilteringFunctions';
 import { sortByTitle, sortByLength, sortByPaidStatus } from '../Lib/SortingFunctions';
+import { useVideoContext } from '../Context/VideoContext';
 
-interface CatalogueSectionProps {
-  onVideoSelect: (video: Video) => void;
-  favoritedVideos: Video[];
-  videos: Video[];
-}
-
-const CatalogueSection: React.FC<CatalogueSectionProps> = ({ onVideoSelect, favoritedVideos, videos }) => {
+const CatalogueSection: React.FC<{ onVideoSelect: (video: Video) => void }> = ({ onVideoSelect }) => {
+  const { videos } = useVideoContext();
   const [filteredVideos, setFilteredVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +28,7 @@ const CatalogueSection: React.FC<CatalogueSectionProps> = ({ onVideoSelect, favo
     }
 
     if (filters.showFavorited) {
-      filtered = filterByFavoritedStatus(filtered, favoritedVideos);
+      filtered = filterByFavoritedStatus(filtered);
     }
 
     setFilteredVideos(filtered);
@@ -58,22 +54,19 @@ const CatalogueSection: React.FC<CatalogueSectionProps> = ({ onVideoSelect, favo
   };
 
   return (
-    <div>
+    <div className='flex flex-col'>
       <section className='mb-2'>
         <CatalogueHeader onFilter={handleFilter} onSort={handleSort} onSearch={handleSearch} />
       </section>
-      
-      {loading ? (
-        <div className="text-center text-white">Loading...</div>
-      ) : filteredVideos.length === 0 ? (
-        <div className="text-center text-white">No videos available</div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredVideos.map(video => (
+      <section className='flex flex-row flex-wrap gap-6 w-full justify-between '>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          filteredVideos.map(video => (
             <VideoCard key={video.id} video={video} onVideoSelect={onVideoSelect} />
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </section>
     </div>
   );
 };

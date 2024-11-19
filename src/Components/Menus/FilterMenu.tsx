@@ -75,7 +75,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ onFilter, onClose }) => {
           <h2 className='text-2xl font-light mb-1'>
             Duration
           </h2>
-          <div className='flex flex-row gap-2 items-center'>
+          <div className='flex flex-row gap-2 items-center text-black'>
             <div className="">
               <input
                 type="text"
