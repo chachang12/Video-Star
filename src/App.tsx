@@ -10,6 +10,7 @@ const App: React.FC = () => {
   const { videos, setVideos, selectedVideo, setSelectedVideo } = useVideoContext();
 
   useEffect(() => {
+    // Gets videos from the API and sets the state
     const getVideos = async () => {
       const fetchedVideos = await fetchVideos();
       setVideos(fetchedVideos);
