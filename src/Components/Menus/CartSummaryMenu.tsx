@@ -1,6 +1,7 @@
 import React from 'react';
 import { IoCloseOutline } from "react-icons/io5";
 import { Video } from '../../Models/Video';
+import CartCard from '../Cards/CartCard';
 
 interface CartSummaryMenuProps {
   videos: Video[];
@@ -28,11 +29,7 @@ const CartSummaryMenu: React.FC<CartSummaryMenuProps> = ({ videos, onClose, onRe
             <p>No videos in cart</p>
           ) : (
             cartVideos.map(video => (
-              <div key={video.id} className="flex justify-between">
-                <span>{video.name}</span>
-                <span>${video.price.toFixed(2)}</span>
-                <button onClick={() => onRemoveFromCart(video)}>Remove</button>
-              </div>
+              <CartCard key={video.id} video={video} onRemoveFromCart={onRemoveFromCart} />
             ))
           )}
         </div>

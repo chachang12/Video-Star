@@ -27,13 +27,11 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoSelect }) => {
         )}
         <div className="absolute bottom-2 left-4">
           <p className="text-white text-md font-[400]">{formatDuration(video.duration)}</p>
-          {/* <p className="text-white text-md font-[400]">{video.duration}</p> */}
         </div>
       </div>
       <div className="mt-2">
         <h2 className="text-lg text-white font-semibold">
           {truncateText(video.name, 75)}
-          {/* {video.name}  */}
         </h2>
       </div>
     </div>
