@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IoCloseOutline } from "react-icons/io5";
 
 interface SearchMenuProps {
+  searchTerm: string;
   onSearch: (searchTerm: string) => void;
   onClose: () => void;
 }
 
-const SearchMenu: React.FC<SearchMenuProps> = ({ onSearch, onClose }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-
+const SearchMenu: React.FC<SearchMenuProps> = ({ searchTerm, onSearch, onClose }) => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearchTerm(value);
     onSearch(value);
   };
 

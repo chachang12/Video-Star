@@ -1,36 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IoCloseOutline } from "react-icons/io5";
 
 interface FilterMenuProps {
+  filters: { showFree: boolean | null, minDuration: string, maxDuration: string, showFavorited: boolean };
   onFilter: (filters: { showFree: boolean | null, minDuration: string, maxDuration: string, showFavorited: boolean }) => void;
   onClose: () => void;
 }
 
-const FilterMenu: React.FC<FilterMenuProps> = ({ onFilter, onClose }) => {
-  const [showFree, setShowFree] = useState<boolean | null>(null);
-  const [minDuration, setMinDuration] = useState('');
-  const [maxDuration, setMaxDuration] = useState('');
-  const [showFavorited, setShowFavorited] = useState(false);
+const FilterMenu: React.FC<FilterMenuProps> = ({ filters, onFilter, onClose }) => {
+  const { showFree, minDuration, maxDuration, showFavorited } = filters;
 
   const handleShowFreeChange = (value: boolean | null) => {
-    setShowFree(value);
     onFilter({ showFree: value, minDuration, maxDuration, showFavorited });
   };
 
   const handleMinDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setMinDuration(value);
     onFilter({ showFree, minDuration: value, maxDuration, showFavorited });
   };
 
   const handleMaxDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setMaxDuration(value);
     onFilter({ showFree, minDuration, maxDuration: value, showFavorited });
   };
 
   const handleShowFavoritedChange = () => {
-    setShowFavorited(!showFavorited);
     onFilter({ showFree, minDuration, maxDuration, showFavorited: !showFavorited });
   };
 

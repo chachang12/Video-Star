@@ -16,6 +16,10 @@ const CatalogueHeader: React.FC<CatalogueHeaderProps> = ({ onFilter, onSort, onS
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filters, setFilters] = useState<{ showFree: boolean | null, minDuration: string, maxDuration: string, showFavorited: boolean }>({ showFree: null, minDuration: '', maxDuration: '', showFavorited: false });
+  const [sortBy, setSortBy] = useState<string>('');
+
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
@@ -26,6 +30,21 @@ const CatalogueHeader: React.FC<CatalogueHeaderProps> = ({ onFilter, onSort, onS
 
   const toggleSort = () => {
     setIsSortOpen(!isSortOpen);
+  };
+
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    onSearch(term);
+  };
+
+  const handleFilter = (newFilters: { showFree: boolean | null, minDuration: string, maxDuration: string, showFavorited: boolean }) => {
+    setFilters(newFilters);
+    onFilter(newFilters);
+  };
+
+  const handleSort = (sortOption: string) => {
+    setSortBy(sortOption);
+    onSort(sortOption);
   };
 
   return (
@@ -46,13 +65,13 @@ const CatalogueHeader: React.FC<CatalogueHeaderProps> = ({ onFilter, onSort, onS
       </div>
 
       {isSearchOpen && (
-        <SearchMenu onSearch={onSearch} onClose={toggleSearch} />
+        <SearchMenu searchTerm={searchTerm} onSearch={handleSearch} onClose={toggleSearch} />
       )}
       {isFilterOpen && (
-        <FilterMenu onFilter={onFilter} onClose={toggleFilter} />
+        <FilterMenu filters={filters} onFilter={handleFilter} onClose={toggleFilter} />
       )}
       {isSortOpen && (
-        <SortMenu onSort={onSort} onClose={toggleSort} />
+        <SortMenu sortBy={sortBy} onSort={handleSort} onClose={toggleSort} />
       )}
     </div>
   );

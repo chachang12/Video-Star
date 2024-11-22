@@ -23,7 +23,8 @@ export const VideoProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const setRandomVideos = useCallback(() => {
     const getRandomVideos = (videos: Video[], count: number): Video[] => {
-      const shuffled = [...videos].sort(() => 0.5 - Math.random());
+      const paidVideos = videos.filter(video => !video.isFree);
+      const shuffled = [...paidVideos].sort(() => 0.5 - Math.random());
       return shuffled.slice(0, count);
     };
     setRandomVideosState(getRandomVideos(videos, 3));
@@ -45,15 +46,21 @@ export const VideoProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const handleAddToCart = useCallback((video: Video) => {
     setVideos(prevVideos => prevVideos.map(v => v.id === video.id ? { ...v, isInCart: true } : v));
-  }, [setVideos]);
+    setSelectedVideo(prevVideo => prevVideo && prevVideo.id === video.id ? { ...prevVideo, isInCart: true } : prevVideo);
+    setRandomVideosState(prevRandomVideos => prevRandomVideos.map(v => v.id === video.id ? { ...v, isInCart: true } : v));
+  }, [setVideos, setSelectedVideo, setRandomVideosState]);
 
   const handleRemoveFromCart = useCallback((video: Video) => {
     setVideos(prevVideos => prevVideos.map(v => v.id === video.id ? { ...v, isInCart: false } : v));
-  }, [setVideos]);
+    setSelectedVideo(prevVideo => prevVideo && prevVideo.id === video.id ? { ...prevVideo, isInCart: false } : prevVideo);
+    setRandomVideosState(prevRandomVideos => prevRandomVideos.map(v => v.id === video.id ? { ...v, isInCart: false } : v));
+  }, [setVideos, setSelectedVideo, setRandomVideosState]);
 
   const handlePurchase = useCallback(() => {
     setVideos(prevVideos => prevVideos.map(video => video.isInCart ? { ...video, isPurchased: true, isInCart: false } : video));
-  }, [setVideos]);
+    setSelectedVideo(prevVideo => prevVideo && prevVideo.isInCart ? { ...prevVideo, isPurchased: true, isInCart: false } : prevVideo);
+    setRandomVideosState(prevRandomVideos => prevRandomVideos.map(video => video.isInCart ? { ...video, isPurchased: true, isInCart: false } : video));
+  }, [setVideos, setSelectedVideo, setRandomVideosState]);
 
   return (
     <VideoContext.Provider value={{ videos, setVideos, selectedVideo, setSelectedVideo, randomVideos, handleFavorite, handleAddToCart, handleRemoveFromCart, handlePurchase }}>

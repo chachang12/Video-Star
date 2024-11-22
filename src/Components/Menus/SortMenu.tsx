@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IoCloseOutline } from "react-icons/io5";
 
 interface SortMenuProps {
+  sortBy: string;
   onSort: (sortBy: string) => void;
   onClose: () => void;
 }
 
-const SortMenu: React.FC<SortMenuProps> = ({ onSort, onClose }) => {
-  const [sortBy, setSortBy] = useState<string>('');
-
+const SortMenu: React.FC<SortMenuProps> = ({ sortBy, onSort, onClose }) => {
   const handleSortChange = (value: string) => {
-    setSortBy(value);
     onSort(value);
   };
 
@@ -26,12 +24,22 @@ const SortMenu: React.FC<SortMenuProps> = ({ onSort, onClose }) => {
         
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
+            <label className="text-2xl font-light">None</label>
+            <input
+              type="radio"
+              name="sort"
+              checked={sortBy === ''}
+              className='w-6 h-6 appearance-none border border-white rounded-sm checked:bg-[#91BA92]'
+              onChange={() => handleSortChange('')}
+            />
+          </div>
+          <div className="flex items-center justify-between">
             <label className="text-2xl font-light">Title</label>
             <input
               type="radio"
               name="sort"
               checked={sortBy === 'title'}
-              className='w-6 h-6'
+              className='w-6 h-6 appearance-none border border-white rounded-sm checked:bg-[#91BA92]'
               onChange={() => handleSortChange('title')}
             />
           </div>
@@ -41,7 +49,7 @@ const SortMenu: React.FC<SortMenuProps> = ({ onSort, onClose }) => {
               type="radio"
               name="sort"
               checked={sortBy === 'length'}
-              className='w-6 h-6'
+              className='w-6 h-6 appearance-none border border-white rounded-sm checked:bg-[#91BA92]'
               onChange={() => handleSortChange('length')}
             />
           </div>
@@ -51,7 +59,7 @@ const SortMenu: React.FC<SortMenuProps> = ({ onSort, onClose }) => {
               type="radio"
               name="sort"
               checked={sortBy === 'paidStatus'}
-              className='w-6 h-6'
+              className='w-6 h-6 appearance-none border border-white rounded-sm checked:bg-[#91BA92]'
               onChange={() => handleSortChange('paidStatus')}
             />
           </div>

@@ -13,8 +13,6 @@ const TheaterMode: React.FC<TheaterModeProps> = ({ video, onClose }) => {
   const { handleFavorite, handleAddToCart } = useVideoContext();
 
   const handleFullscreenChange = (event: Event) => {
-
-    // Disable styling for fullscreen mode
     const videoElement = event.target as HTMLVideoElement;
     if (document.fullscreenElement) {
       videoElement.style.border = 'none';
@@ -33,7 +31,7 @@ const TheaterMode: React.FC<TheaterModeProps> = ({ video, onClose }) => {
         <div className="w-full lg:w-3/4 relative border border-2 border-white rounded-t-3xl lg:rounded-l-3xl lg:rounded-tr-none">
           <video
             src={video.url}
-            controls={video.isFree || video.isPurchased} // Only show the video controls, i.e. allowing playback, if the video is free or if it has been purchased. 
+            controls={video.isFree || video.isPurchased}
             crossOrigin='anonymous'
             className={`w-full h-full object-cover rounded-t-3xl lg:rounded-l-3xl lg:rounded-tr-none ${!video.isFree && !video.isPurchased ? 'filter blur-sm' : ''}`}
             onLoadedMetadata={(event) => {
@@ -41,7 +39,7 @@ const TheaterMode: React.FC<TheaterModeProps> = ({ video, onClose }) => {
               videoElement.onfullscreenchange = handleFullscreenChange;
             }}
           />
-          {!video.isFree && !video.isPurchased && (
+          {!video.isFree && !video.isPurchased && !video.isInCart && (
             <div className="absolute inset-0 flex items-center justify-center">
               <button onClick={() => handleAddToCart(video)} className="text-white py-2 px-4 rounded-full outline outline-2 outline-white">Add to Cart</button>
             </div>
